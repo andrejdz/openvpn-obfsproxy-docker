@@ -5,7 +5,7 @@ Open VPN server with obfuscation.
 * Open the following file *create-infrastructure/docker-infrastructure.sh*.
 * Updated variables using your values. Pay attention to the path variables.
 * Run the deployment script:
-``bash
+```bash
 ./docker-infrastructure.sh
 ```
 * During deployment ssh key will be created for accessing the virtual machine.
