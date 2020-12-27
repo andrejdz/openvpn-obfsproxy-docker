@@ -1,0 +1,1 @@
+obfsproxy --log-file {PATH TO LOG FOLDER}/obfsproxy.log --log-min-severity debug scramblesuit --password {PASSWORD} --dest {SERVER PUBLIC IP}:21194 client 127.0.0.1:10194
