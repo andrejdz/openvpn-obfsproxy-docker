@@ -9,10 +9,6 @@ Open VPN server with obfuscation.
 ./docker-infrastructure.sh
 ```
 * During deployment ssh key will be created for accessing the virtual machine.
-* You can run the following command to connect to the server:
-```bash
-ssh -i {PATH TO PRIVATE SSH KEY} openvpn@{SERVER PUBLIC IP}
-```
 
 ## Configuring environment variables
 * Open the following files *docker-compose/openvpn-docker/openvpn.env*, *docker-compose/obfsproxy-docker/obfsproxy.env*.
@@ -24,14 +20,17 @@ ssh -i {PATH TO PRIVATE SSH KEY} openvpn@{SERVER PUBLIC IP}
 ```bash
 scp -i {PATH TO PRIVATE SSH KEY} -r {PATH TO ROOT FOLDER}/docker-compose openvpn@{SERVER PUBLIC IP}:/tmp
 ```
-* Connect to the server using SSH and move to the */tmp/docker-compose* folder.
+* Connect to the server using SSH and move to the */tmp/docker-compose* folder:
+```bash
+ssh -i {PATH TO PRIVATE SSH KEY} openvpn@{SERVER PUBLIC IP}
+```
 * Pull images from the *Docker HUB* using the following command:
 ```bash
-./docker-compose pull
+docker-compose pull
 ```
 * Run docker containers in detached mode:
 ```bash
-./docker-compose up --detach
+docker-compose up --detach
 ```
 
 ## Updating Open VPN profiles
@@ -43,7 +42,7 @@ scp -i {PATH TO PRIVATE SSH KEY} -r {PATH TO ROOT FOLDER}/docker-compose openvpn
 * This profile can be used for connecting to Open VPN without obfuscation.
 * To create profile that is used for establishing connection with obfuscation you should copy the original profile.
 * Then open it with any text editor and replace server's public IP with localhost IP address (127.0.0.1).
-* Then change 443 port to 21194 port.
+* Then change 443 port to 10194 port.
 
 ## Installing obfsproxy
 * Install *python version 2.7* on your local machine.
