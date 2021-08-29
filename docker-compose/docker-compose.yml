@@ -3,7 +3,7 @@ services:
   openvpn:
     build: 
       context: ./openvpn-docker
-    image: andrejdz/openvpn:1.1
+    image: andrejdz/openvpn:latest
     container_name: openvpn
     env_file: ./openvpn-docker/openvpn.env
     cap_add:
@@ -17,7 +17,7 @@ services:
   obfsproxy:
     build:
       context: ./obfsproxy-docker
-    image: andrejdz/obfsproxy:1.0
+    image: andrejdz/obfsproxy:latest
     container_name: obfsproxy
     env_file: ./obfsproxy-docker/obfsproxy.env
     network_mode: bridge
