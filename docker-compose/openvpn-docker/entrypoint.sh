@@ -30,8 +30,14 @@ chmod 0666 /dev/net/tun
 echo 'Setting password for builtin openvpn user.'
 (echo $ADMIN_PASS; echo $ADMIN_PASS) | passwd openvpn
 
-echo 'Creating connection user.'
-./confdba --userdb --new --prof=$USER_NAME
+if ./confdba --userdb --show | grep -qcm1 $USER_NAME;
+  then
+    echo 'Reusing an existing connection user.'
+  else
+    echo 'Creating a new connection user.'
+    ./confdba --userdb --new --prof=$USER_NAME
+fi
+
 ./confdba --userdb --mod --prof=$USER_NAME --key="type" --value="user_connect"
 
 echo 'Calculating hash value for user password, because it is stored in db this way.'
@@ -46,4 +52,5 @@ echo 'Configuring to use only TCP protocol with 443 port.'
 
 echo 'Running Open VPN service.'
 echo 'Logs are being written to stdout.'
+rm -f /run/openvpnas.pid
 exec ./openvpnas --nodaemon --pidfile=/run/openvpnas.pid

@@ -3,7 +3,7 @@ services:
   openvpn:
     build: 
       context: ./openvpn-docker
-    image: andrejdz/openvpn:1.0
+    image: andrejdz/openvpn:1.1
     container_name: openvpn
     env_file: ./openvpn-docker/openvpn.env
     cap_add:
