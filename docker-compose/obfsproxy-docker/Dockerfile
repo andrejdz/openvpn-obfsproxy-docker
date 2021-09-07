@@ -9,7 +9,7 @@ RUN set -e \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir --parents /opt/obfsproxy
 EXPOSE 21194
-ENTRYPOINT obfsproxy \
+ENTRYPOINT exec obfsproxy \
     --log-min-severity ${LOG_LEVEL} \
     --data-dir /opt/obfsproxy \
     scramblesuit \

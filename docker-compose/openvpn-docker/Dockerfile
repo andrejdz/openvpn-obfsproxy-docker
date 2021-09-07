@@ -8,7 +8,7 @@ RUN set -e \
     && apt-get --yes install openvpn-as \
     && apt-get --yes clean \
     && rm -rf /var/lib/apt/lists/*
-WORKDIR "/usr/local/openvpn_as/scripts"
+WORKDIR /usr/local/openvpn_as/scripts
 COPY entrypoint.sh .
 EXPOSE 443 943
 ENTRYPOINT ./entrypoint.sh \
