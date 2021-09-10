@@ -1,30 +1,31 @@
 version: "3.9"
 services:
   openvpn:
-    build: 
-      context: ./openvpn-docker
     image: andrejdz/openvpn:latest
     container_name: openvpn
     env_file: ./openvpn-docker/openvpn.env
     cap_add:
       - NET_ADMIN
-    network_mode: bridge
+    networks:
+      - openvpn-network
     ports:
       - "443:443"
       - "943:943"
     restart: unless-stopped
 
   obfsproxy:
-    build:
-      context: ./obfsproxy-docker
     image: andrejdz/obfsproxy:latest
     container_name: obfsproxy
     env_file: ./obfsproxy-docker/obfsproxy.env
-    network_mode: bridge
-    links:
-      - "openvpn"
+    networks:
+      - openvpn-network
     ports:
       - "21194:21194"
     restart: unless-stopped
     depends_on:
       - openvpn
+
+networks:
+  openvpn-network:
+    name: openvpn-network
+    driver: bridge
