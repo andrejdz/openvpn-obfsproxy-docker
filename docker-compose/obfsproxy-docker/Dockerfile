@@ -1,7 +1,7 @@
 FROM --platform=amd64 ubuntu:18.04
 RUN set -e \
     && apt-get update \
-    && apt-get install --no-install-recommends --yes python python-pip \
+    && apt-get install --no-install-recommends --yes python python-pip gcc libpython2.7-dev \
     && pip install --upgrade pip setuptools wheel \
     && pip install obfsproxy \
     && apt-get --yes clean \

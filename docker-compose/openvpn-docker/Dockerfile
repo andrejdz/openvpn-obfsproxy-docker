@@ -11,7 +11,9 @@ RUN set -e \
 WORKDIR /usr/local/openvpn_as/scripts
 COPY entrypoint.sh .
 EXPOSE 443 943
-ENTRYPOINT ./entrypoint.sh \
+ENTRYPOINT exec ./entrypoint.sh \
     --admin-password ${ADMIN_PASSWORD} \
     --user-name ${USER_NAME} \
-    --user-password ${USER_PASSWORD}
+    --user-password ${USER_PASSWORD} \
+    --dns-server-primary ${DNS_SERVER_PRIMARY} \
+    --dns-server-secondary ${DNS_SERVER_SECONDARY}

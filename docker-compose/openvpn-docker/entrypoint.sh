@@ -16,6 +16,14 @@ while [ ! -z "$1" ];do
           shift
           USER_PASS="$1"
           ;;
+        --dns-server-primary)
+          shift
+          DNS_SERVER_PRIMARY="$1"
+          ;;
+        --dns-server-secondary)
+          shift
+          DNS_SERVER_SECONDARY="$1"
+          ;;
         *)
        echo "Incorrect input provided"
    esac
@@ -36,19 +44,23 @@ if ./confdba --userdb --show | grep -qcm1 $USER_NAME;
   else
     echo 'Creating a new connection user.'
     ./confdba --userdb --new --prof=$USER_NAME
+    ./confdba --userdb --mod --prof=$USER_NAME --key="type" --value="user_connect"
+
+    echo 'Calculating hash value for user password, because it is stored in db this way.'
+    USER_PASS_SHA256=$(echo -n $USER_PASS | sha256sum | tr -d '[:space:]-')
+    echo "Setting password for user: $USER_NAME."
+    ./confdba --userdb --mod --prof=$USER_NAME --key="pvt_password_digest" --value=$USER_PASS_SHA256
 fi
-
-./confdba --userdb --mod --prof=$USER_NAME --key="type" --value="user_connect"
-
-echo 'Calculating hash value for user password, because it is stored in db this way.'
-USER_PASS_SHA256=$(echo -n $USER_PASS | sha256sum | tr -d '[:space:]-')
-echo "Setting password for user: $USER_NAME."
-./confdba --userdb --mod --prof=$USER_NAME --key="pvt_password_digest" --value=$USER_PASS_SHA256
 
 echo 'Configuring to use only TCP protocol with 443 port.'
 ./confdba --local --mod --key="vpn.server.daemon.enable" --value="false"
 ./confdba --local --mod --key="vpn.daemon.0.listen.protocol" --value="tcp"
 ./confdba --local --mod --key="vpn.server.port_share.enable" --value="true"
+
+echo 'Configuring DNS servers.'
+./confdba --local --mod --key="vpn.client.routing.reroute_dns" --value="custom"
+./confdba --local --mod --key="vpn.server.dhcp_option.dns.0" --value=$DNS_SERVER_PRIMARY
+./confdba --local --mod --key="vpn.server.dhcp_option.dns.1" --value=$DNS_SERVER_SECONDARY
 
 echo 'Running Open VPN service.'
 echo 'Logs are being written to stdout.'
