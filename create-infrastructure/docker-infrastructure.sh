@@ -27,7 +27,7 @@ storageSku='Premium_LRS'
 osDiskName="openvpn-vm-osdisk-$suffix"
 vmImage='Canonical:UbuntuServer:18.04-LTS:latest'
 userName='openvpn'
-homeFolder='/home/andrew'
+homeFolder="/home/$userName"
 # Path to the docker installer script
 dockerInstallerScriptPath="$homeFolder/openvpn-eu/create-infrastructure/install-docker.sh"
 # Path to ssh folder on deployment machine
